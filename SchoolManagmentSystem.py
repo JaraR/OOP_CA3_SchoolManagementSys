@@ -42,6 +42,21 @@ class HistoryStudent(Student):
         return result_str
 
 
+class MathStudent(Student):
+    """Math student class that inherits from student class"""
+
+    def __init__(self, student_id, first, last, math_grade):
+        """initializes a MAth student with an ID, first name, last name, and a Math grade"""
+        Student.__init__(self, student_id, first, last)
+        self.math_grade = math_grade
+
+    def __str__(self):
+        """returns a student's ID, first name, last name, and Math grade"""
+        result_str = Student.__str__(self)
+        result_str = result_str + " Math grade: " + str(self.math_grade)
+        return result_str
+
+
 # Main Program
 student1 = Student(1, "John", "Doe")
 print(student1)
