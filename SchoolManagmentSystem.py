@@ -5,7 +5,7 @@ class Student(object):
 
     def __init__(self, first, last):
         """initializes a student with an ID, first name, and last name"""
-        self.student_id = Student.student_id
+        self.student_id = str(Student.student_id)
         self.first = first
         self.last = last
         Student.student_id += 1
@@ -34,6 +34,41 @@ class EnglishStudent(Student):
         result_str = result_str + " English grade: " + str(self.english_grade)
         return result_str
 
+    def update_grades(self):
+        print("Updating English student grades.")
+        while True:
+            print("1: Attendance\n2: Final Exam\n3: Quiz 1\n4: Quiz 2\n5: Quit\n")
+            user_input = input("Please select your choice: ")
+            if user_input == "1":
+                print("Current Attendance grade: {}".format(self.attendance))
+                try:
+                    self.attendance = float(input("Enter Attendance grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "2":
+                print("Current Final Exam grade: {}".format(self.final_exam))
+                try:
+                    self.final_exam = float(input("Enter Final Exam grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "3":
+                print("Current Quiz 1 grade: {}".format(self.quiz1))
+                try:
+                    self.quiz1 = float(input("Enter Quiz 1 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "4":
+                print("Current Quiz 2 grade: {}".format(self.quiz2))
+                try:
+                    self.quiz2 = float(input("Enter Quiz 2 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "5":
+                print("Returning to main menu.")
+                return
+            else:
+                print("Please enter a valid input.")
+
 
 class HistoryStudent(Student):
     """History student class that inherits from student class"""
@@ -54,6 +89,41 @@ class HistoryStudent(Student):
         result_str = result_str + " History grade: " + str(self.history_grade)
         return result_str
 
+    def update_grades(self):
+        print("Updating History student grades.")
+        while True:
+            print("1: Attendance\n2: Project\n3: Exam 1\n4: Exam 2\n5: Quit\n")
+            user_input = input("Please select your choice: ")
+            if user_input == "1":
+                print("Current Attendance grade: {}".format(self.attendance))
+                try:
+                    self.attendance = float(input("Enter Attendance grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "2":
+                print("Current Project grade: {}".format(self.project))
+                try:
+                    self.project = float(input("Enter Project grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "3":
+                print("Current Exam 1 grade: {}".format(self.exam1))
+                try:
+                    self.exam1 = float(input("Enter Exam 1 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "4":
+                print("Current Exam 2 grade: {}".format(self.exam2))
+                try:
+                    self.exam2 = float(input("Enter Exam 2 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "5":
+                print("Returning to main menu.")
+                return
+            else:
+                print("Please enter a valid input.")
+
 
 class MathStudent(Student):
     """Math student class that inherits from student class"""
@@ -62,6 +132,7 @@ class MathStudent(Student):
         """initializes a Math student with an ID, first name, last name, course work, and a Math grade"""
         Student.__init__(self, first, last)
         self.quizzes = [0, 0, 0, 0, 0]
+        self.quiz_avg = 0
         self.test1 = 0
         self.test2 = 0
         self.final_exam = 0
@@ -73,6 +144,45 @@ class MathStudent(Student):
         result_str = Student.__str__(self)
         result_str = result_str + " Math grade: " + str(self.math_grade)
         return result_str
+
+    def update_grades(self):
+        print("Updating Math student grades.")
+        while True:
+            print("1: Quizzes\n2: Test 1\n3: Test 2\n4: Final Exam\n5: Quit\n")
+            user_input = input("Please select your choice: ")
+            if user_input == "1":
+                print("Current quiz grades: ", end="")
+                for grade in self.quizzes:
+                    print(grade, end=" ")
+                print()
+                try:
+                    for index, value in enumerate(self.quizzes):
+                        self.quizzes[index] = float(input("Enter quiz grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "2":
+                print("Current Test 1 grade: {}".format(self.test1))
+                try:
+                    self.test1 = float(input("Enter Test 1 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "3":
+                print("Current Test 2 grade: {}".format(self.test2))
+                try:
+                    self.test2 = float(input("Enter Test 2 grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "4":
+                print("Current Final Exam grade: {}".format(self.final_exam))
+                try:
+                    self.final_exam = float(input("Enter Final Exam grade: "))
+                except ValueError:
+                    print("You did not enter a number!")
+            elif user_input == "5":
+                print("Returning to main menu.")
+                return
+            else:
+                print("Please enter a valid input.")
 
 
 class School(object):
@@ -110,11 +220,12 @@ class School(object):
         and calculates the total grade"""
         if isinstance(student, EnglishStudent):
             grade = (student.attendance * 0.1) + (student.final_exam * 0.6) + (student.quiz1 * 0.15) + (
-                        student.quiz2 * 0.15)
+                    student.quiz2 * 0.15)
         elif isinstance(student, HistoryStudent):
             grade = (student.attendance * 0.1) + (student.project * 0.3) + (student.exam1 * 0.3) + (student.exam2 * 0.3)
         elif isinstance(student, MathStudent):
             quiz_avg = sum(student.quizzes) / 5
+            student.quiz_avg = quiz_avg
             grade = (quiz_avg * 0.15) + (student.test1 * 0.15) + (student.test2 * 0.15) + (student.final_exam * 0.55)
         else:
             grade = 0
@@ -125,38 +236,99 @@ class School(object):
         grade = self.calculate_grade(student)
         name = student.first + " " + student.last
         print("ID: {:<5} {} Student: {:<26} Grade: {}".format(student.student_id, student.subject, name, grade))
+        if isinstance(student, EnglishStudent):
+            print("Attendance: {:>15}".format(student.attendance))
+            print("Final Exam: {:>15}".format(student.final_exam))
+            print("Quiz 1: {:>19}".format(student.quiz1))
+            print("Quiz 2: {:>19}".format(student.quiz2))
+        elif isinstance(student, HistoryStudent):
+            print("Attendance: {:>15}".format(student.attendance))
+            print("Project: {:>18}".format(student.project))
+            print("Exam 1: {:>19}".format(student.exam1))
+            print("Exam 2: {:>19}".format(student.exam2))
+        elif isinstance(student, MathStudent):
+            print("Quizzes: {:>18}".format(student.quiz_avg))
+            print("Test 1: {:>19}".format(student.test1))
+            print("Test 2: {:>19}".format(student.test2))
+            print("Final Exam: {:>15}".format(student.final_exam))
+
 
 
 def main():
     """an interactive command line menu that allows a user to login and perform CRUD operations on student data"""
+    TUD = School()
+
     while True:
         print("1: Login\n2: Add Student \n3: Remove Student\n4: Create Student Data\n5: Read Student Data\n6: Update "
               "Student Data\n7: Delete Student Data\n8: Quit")
-        user_input = input("Please select your choice, login is required before doing any CRUD operations: ")
+        user_input = input("Please select your choice, login is required before doing most operations: ")
 
         if user_input == "8":
             print("Thank you for using TUD Student Management, goodbye!")
             return
         elif user_input == "1":
-            pass
+            print("Login")
         elif user_input == "2":
-            pass
+            print("Add Student")
+            f_name = input("Enter the student's first name: ")
+            l_name = input("Enter the student's last name: ")
+            course = input("Enter the course that the student will be taking (English, History, or Math): ")
+
+            if course.lower() == "english":
+                student = EnglishStudent(f_name, l_name)
+            elif course.lower() == "history":
+                student = HistoryStudent(f_name, l_name)
+            elif course.lower() == "math":
+                student = MathStudent(f_name, l_name)
+            else:
+                print("Please make sure that the course is correct.")
+                continue
+
+            TUD.add_student(student)
+            # save addition
+            print("Student has been added to TUD.")
+            print(TUD)
+
         elif user_input == "3":
-            pass
+            print("Remove Student")
+            s_id = input("Enter the student's ID that you want to remove from the system: ")
+            student = TUD.find_student_by_id(s_id)
+            if isinstance(student, Student):
+                print(student)
+                confirmation = input("Are you sure you want to remove this student from the system? (y/n): ")
+                if confirmation.lower() == "y":
+                    TUD.remove_student(student)
+                    print("Student has been removed from TUD.")
+                    # save deletion
+                elif confirmation.lower() == "n":
+                    print("Removal has been canceled, returning to main menu.")
+                    continue
+                else:
+                    print("Invalid input, returning to main menu.")
+                    continue
+            else:
+                print("Student cannot be found.")
+
         elif user_input == "4":
-            pass
+            print("Create Student Data")
         elif user_input == "5":
-            pass
+            print("Read Student Data")
+            s_id = input("Enter the student's ID: ")
+            student = TUD.find_student_by_id(s_id)
+            if student:
+                TUD.student_report(student)
+            else:
+                print("Student cannot be found.")
         elif user_input == "6":
-            pass
+            print("Update Student Data")
         elif user_input == "7":
-            pass
+            print("Delete Student Data")
         else:
             print("Please enter a valid input.")
 
 
 # Main Program
-main()
+# main()
 student1 = EnglishStudent("John", "Doe")
 print(student1)
 
@@ -185,3 +357,11 @@ for x in TUD.students:
     print(x)
 
 TUD.student_report(student4)
+
+student1.update_grades()
+student2.update_grades()
+student3.update_grades()
+
+TUD.student_report(student1)
+TUD.student_report(student2)
+TUD.student_report(student3)
