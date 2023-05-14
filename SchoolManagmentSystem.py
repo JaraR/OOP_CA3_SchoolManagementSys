@@ -25,8 +25,8 @@ class EnglishStudent(Student):
         self.final_exam = 0
         self.quiz1 = 0
         self.quiz2 = 0
-        self.english_grade = (self.attendance * 0.1) + (self.final_exam * 0.6) + (self.quiz1 * 0.15) + (
-                self.quiz2 * 0.15)
+        self.english_grade = 0
+        self.subject = "English"
 
     def __str__(self):
         """returns a student's ID, first name, last name, and English grade"""
@@ -45,7 +45,8 @@ class HistoryStudent(Student):
         self.project = 0
         self.exam1 = 0
         self.exam2 = 0
-        self.history_grade = (self.attendance * 0.1) + (self.project * 0.3) + (self.exam1 * 0.3) + (self.exam2 * 0.3)
+        self.history_grade = 0
+        self.subject = "History"
 
     def __str__(self):
         """returns a student's ID, first name, last name, and History grade"""
@@ -64,7 +65,8 @@ class MathStudent(Student):
         self.test1 = 0
         self.test2 = 0
         self.final_exam = 0
-        self.math_grade = (self.quizzes * 0.15) + (self.test1 * 0.15) + (self.test2 * 0.15) + (self.final_exam * 0.55)
+        self.math_grade = 0
+        self.subject = "Math"
 
     def __str__(self):
         """returns a student's ID, first name, last name, and Math grade"""
@@ -103,21 +105,75 @@ class School(object):
                 return student
         return None
 
+    def calculate_grade(self, student):
+        """calculates a students weighted grade for each assignment type, including those with multiple assignments,
+        and calculates the total grade"""
+        if isinstance(student, EnglishStudent):
+            grade = (student.attendance * 0.1) + (student.final_exam * 0.6) + (student.quiz1 * 0.15) + (
+                        student.quiz2 * 0.15)
+        elif isinstance(student, HistoryStudent):
+            grade = (student.attendance * 0.1) + (student.project * 0.3) + (student.exam1 * 0.3) + (student.exam2 * 0.3)
+        elif isinstance(student, MathStudent):
+            quiz_avg = sum(student.quizzes) / 5
+            grade = (quiz_avg * 0.15) + (student.test1 * 0.15) + (student.test2 * 0.15) + (student.final_exam * 0.55)
+        else:
+            grade = 0
+        return grade
+
+    def student_report(self, student):
+        """prints a well formatted student report"""
+        grade = self.calculate_grade(student)
+        name = student.first + " " + student.last
+        print("ID: {:<5} {} Student: {:<26} Grade: {}".format(student.student_id, student.subject, name, grade))
+
+
+def main():
+    """an interactive command line menu that allows a user to login and perform CRUD operations on student data"""
+    while True:
+        print("1: Login\n2: Add Student \n3: Remove Student\n4: Create Student Data\n5: Read Student Data\n6: Update "
+              "Student Data\n7: Delete Student Data\n8: Quit")
+        user_input = input("Please select your choice, login is required before doing any CRUD operations: ")
+
+        if user_input == "8":
+            print("Thank you for using TUD Student Management, goodbye!")
+            return
+        elif user_input == "1":
+            pass
+        elif user_input == "2":
+            pass
+        elif user_input == "3":
+            pass
+        elif user_input == "4":
+            pass
+        elif user_input == "5":
+            pass
+        elif user_input == "6":
+            pass
+        elif user_input == "7":
+            pass
+        else:
+            print("Please enter a valid input.")
+
 
 # Main Program
-student1 = Student("John", "Doe")
+main()
+student1 = EnglishStudent("John", "Doe")
 print(student1)
 
-student2 = Student("Jane", "Doe")
+student2 = HistoryStudent("Jane", "Doe")
 print(student2)
 
-student3 = Student("Dane", "Joe")
+student3 = MathStudent("Dane", "Joe")
 print(student3)
+
+student4 = MathStudent("Elizabeth", "McConnell")
+print(student4)
 
 TUD = School()
 TUD.add_student(student1)
 TUD.add_student(student2)
 TUD.add_student(student3)
+TUD.add_student(student4)
 print(TUD)
 
 print(TUD.find_student_by_id(2))
@@ -127,3 +183,5 @@ print(TUD)
 
 for x in TUD.students:
     print(x)
+
+TUD.student_report(student4)
