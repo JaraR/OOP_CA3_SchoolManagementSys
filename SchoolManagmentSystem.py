@@ -253,6 +253,13 @@ class School(object):
         """removes a student from the school's list of students"""
         self.students.remove(student)
 
+        if student.subject == "English":
+            self.english_students.remove(student)
+        elif student.subject == "History":
+            self.history_students.remove(student)
+        elif student.subject == "Math":
+            self.math_students.remove(student)
+
     def find_student_by_id(self, student_id):
         """finds and returns a student by their ID number"""
         for student in self.students:
@@ -336,7 +343,7 @@ class School(object):
         with open(filename, "w") as file:
             json.dump(data, file)
 
-    def save_subclass_file(self, student=None, sub_list=None, filename=None):
+    def save_subclass_file(self, student=None, sub_list=None):
         """saves student subclass data to a json file for persistent memory"""
         data = []
         if sub_list is not None:
@@ -446,9 +453,9 @@ def main():
 
         if user_input == "7":
             TUD.save_file("school.json")
-            TUD.save_subclass_file(None, TUD.english_students)
-            TUD.save_subclass_file(None, TUD.history_students)
-            TUD.save_subclass_file(None, TUD.math_students)
+            TUD.save_subclass_file(sub_list=TUD.english_students)
+            TUD.save_subclass_file(sub_list=TUD.history_students)
+            TUD.save_subclass_file(sub_list=TUD.math_students)
             print("Thank you for using TUD Student Management, goodbye!")
             return
 
